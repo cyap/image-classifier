@@ -9,12 +9,16 @@ weights to those trained using ImageNet. If the ImageNet ResNet50
 weights aren't yet on the server, this will download them from
 the keras github page.
 """
-model = ResNet50(weights='imagenet')
 
 class Classifier:
+
+    model = None
+
     def __init__(self):
         self._architecture = 'ResNet50'
         self._target_size = (224,224)
+        if not Classifier.model:
+            Classifier.model = ResNet50(weights='imagenet')
 
     def process_image(self, img_path):
 
@@ -67,7 +71,9 @@ class Classifier:
 
 # or
 
-classifier = Classifier()
-out = classifier.pipeline('elephant.jpg')
-# {'border': 'red', 'category': u'tusker'}
-print(out)
+if __name__ == "__main__":
+    classifier = Classifier()
+    out = classifier.pipeline('elephant.jpg')
+    # {'border': 'red', 'category': u'tusker'}
+    print(out)
+
