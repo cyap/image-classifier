@@ -1,4 +1,4 @@
-from keras.applications.resnet50 import ResNet
+from keras.applications.resnet50 import ResNet50
 from keras.preprocessing import image
 from keras.applications.resnet50 import preprocess_input, decode_predictions
 import numpy as np
@@ -10,8 +10,6 @@ weights aren't yet on the server, this will download them from
 the keras github page.
 """
 model = ResNet50(weights='imagenet')
-
-
 
 class Classifier:
     def __init__(self):
@@ -35,14 +33,14 @@ class Classifier:
         self._preds = model.predict(self._x)
 
     def get_classification(self):
+        self.category = decode_predictions(self._preds, top=1)[0][0][1]
 
-        self.category = decode_predictions(self._preds, top=1)[0][1]
 
     def get_border(self):
-        if len(category)%2 > 0:
+        if len(self.category)%2 > 0:
             self.border = 'blue'
         else:
-            self.border = 'blue'
+            self.border = 'red'
 
     def response(self):
         return {'category': self.category, 'border': self.border}
@@ -51,6 +49,7 @@ class Classifier:
         self.process_image(img_path)
         self.classify_image()
         self.get_classification()
+        self.get_border()
 
         return self.response()
 
@@ -68,6 +67,7 @@ class Classifier:
 
 # or
 
-# classifier = Classifier()
-out = classifier.pipeline('/FIR/recruiting/challenge_questions/elephant.jpg')
-out
+classifier = Classifier()
+out = classifier.pipeline('elephant.jpg')
+# {'border': 'red', 'category': u'tusker'}
+print(out)
