@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	{% load staticfiles %}
+	<title>{% block title %}Image Classifier{% endblock title%}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"/>
+</head>
+
+<body>
+	<div class="content">
+		{% block content %}
+		{% endblock content %}
+	</div>
+</body>
+</html>
