@@ -1,8 +1,11 @@
+from urllib.request import urlretrieve, urlopen
+
 from django.shortcuts import render
+from django.core.files import File
+from django.core.files.base import ContentFile
 
 from . import forms
 from .ImageHandler.classifier import Classifier
-from .ImageHandler import file_handler
 
 def index(request):
 
@@ -16,22 +19,32 @@ def index(request):
 		classifier = Classifier()
 		return classifier.pipeline(image_path)
 
+	def file_from_url(url):
+		content = urlopen(url).read()
+		name = url.rsplit('/', 1)[1]
+		return {'upload': ContentFile(content, name)}
+
 	if request.method == "GET":
 		return render(request, "index.html", {
-			'image_form': forms.ImageForm()
+			'image_form': forms.ImageForm(),
+			'web_image_form': forms.WebImageForm()
 		})
 
 	if request.method == "POST":
-		form = forms.ImageForm(request.POST, request.FILES)
+		upload = request.FILES or file_from_url(request.POST['url'])
+		form = forms.ImageForm(request.POST, upload)
 		if form.is_valid():
 			image_path = host_image(form)
 			classification = classify_image(image_path)
+
 			# Change to AJAX
 			return render(request, "results.html", {
 					'image_path': image_path,
-					'color': classification['border']
+					'classification': classification
 			})
 		else:
-			# return errors
-			pass
-
+			return render(request, "index.html", {
+				'image_form': forms.ImageForm(),
+				'web_image_form': forms.WebImageForm(),
+				'error': "Invalid image."
+			})
