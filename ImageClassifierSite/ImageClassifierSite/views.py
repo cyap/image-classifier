@@ -6,24 +6,32 @@ from .ImageHandler import file_handler
 
 def index(request):
 
-	if request.method == "GET":
-		return render(request, "index.html", {
-		})
-
-	if request.method == "POST":
-		image_path = host_image(image_data, location)
-		classification = classify_image(image_path)
-		return render(request, "result.html")
-
-
-	def host_image(image_data, location):
+	def host_image(form):
 		""" Saves image to /media/ """
-
-		# Hash doesn't persist
-		file_name = hash(image_data)
-		file_handler.save(image_data, file_name, location)
-		return os.path.join(location, file_name)
+		image = form.save()
+		image_path = image.upload.url.strip('/')
+		return image_path
 
 	def classify_image(image_path):
 		classifier = Classifier()
 		return classifier.pipeline(image_path)
+
+	if request.method == "GET":
+		return render(request, "index.html", {
+			'image_form': forms.ImageForm()
+		})
+
+	if request.method == "POST":
+		form = forms.ImageForm(request.POST, request.FILES)
+		if form.is_valid():
+			image_path = host_image(form)
+			classification = classify_image(image_path)
+			# Change to AJAX
+			return render(request, "results.html", {
+					'image_path': image_path,
+					'color': classification['border']
+			})
+		else:
+			# return errors
+			pass
+
