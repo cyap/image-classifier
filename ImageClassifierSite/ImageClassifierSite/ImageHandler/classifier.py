@@ -34,11 +34,10 @@ class Classifier:
 
     def classify_image(self):
 
-        self._preds = model.predict(self._x)
+        self._preds = Classifier.model.predict(self._x)
 
     def get_classification(self):
         self.category = decode_predictions(self._preds, top=1)[0][0][1]
-
 
     def get_border(self):
         if len(self.category)%2 > 0:
