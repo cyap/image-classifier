@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <img class="{{ color }}" src="/{{ image_path }}">
+  <img class="{{ classification.border }}" src="/{{ image_path }}">
+  <div>Classification: {{ classification.category }}</div>
 {% endblock content %}
