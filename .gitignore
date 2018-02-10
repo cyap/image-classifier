@@ -1,2 +1,3 @@
 *.pyc
-ImageClassifierSite/media/*
+ImageClassifierSite/media/uploads/*
+ImageClassifierSite/staticfiles/*
