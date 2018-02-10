@@ -1,18 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <form enctype="multipart/form-data" method="POST">
-    {% csrf_token %} 
-    {{ image_form }}
-    <br>
-    <input type="submit" value="Submit">
-  </form>
-  {{ error }}
 
-  <form method="POST">
-    {% csrf_token %} 
-    {{ web_image_form }}
-    <input type="submit" value="Submit">
-  </form>
+<form enctype="multipart/form-data" method="POST">
+  <table>
+  {% csrf_token %} 
+  {{ image_form.as_table }}
+  {{ error }}
+  </table>
+  <input type="submit" value="Submit">
+</form>
+
+<form method="POST">
+  <table>
+  {% csrf_token %} 
+  {{ web_image_form.as_table }}
+  </table>
+  <input type="submit" value="Submit">
+</form>
   
 {% endblock content %}
