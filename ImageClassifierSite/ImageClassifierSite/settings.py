@@ -52,7 +52,7 @@ MIDDLEWARE = [
 ]
 
 #ROOT_URLCONF = 'ImageClassifierSite.ImageClassifierSite.urls'
-    ROOT_URLCONF = 'ImageClassifierSite.urls'
+ROOT_URLCONF = 'ImageClassifierSite.urls'
 
 TEMPLATES = [
     {
