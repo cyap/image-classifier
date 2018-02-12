@@ -7,6 +7,9 @@ from django.core.files.base import ContentFile
 from . import forms
 from .ImageHandler.classifier import Classifier
 
+import os
+from . import settings
+
 def index(request):
 
 	def host_image(form):
@@ -33,9 +36,10 @@ def index(request):
 	if request.method == "POST":
 		upload = request.FILES or file_from_url(request.POST['url'])
 		form = forms.ImageForm(request.POST, upload)
+
 		if form.is_valid():
 			image_path = host_image(form)
-			classification = classify_image(image_path)
+			classification = classify_image(os.path.join(settings.BASE_DIR, image_path))
 
 			# Change to AJAX
 			return render(request, "results.html", {
