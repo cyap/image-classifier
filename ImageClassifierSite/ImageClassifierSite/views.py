@@ -1,4 +1,4 @@
-from urllib.request import urlretrieve, urlopen
+from urllib.request import urlopen, Request
 
 from django.shortcuts import render
 from django.core.files import File
@@ -9,6 +9,10 @@ from .ImageHandler.classifier import Classifier
 
 import os
 from . import settings
+
+HEADERS = {'User-Agent' : 
+"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML,"
+"like Gecko) Chrome/54.0.2840.98 Safari/537.36"}
 
 def index(request):
 
@@ -23,7 +27,9 @@ def index(request):
 		return classifier.pipeline(image_path)
 
 	def file_from_url(url):
-		content = urlopen(url).read()
+		#content = urlopen(url).read()
+		content = urlopen(Request(url, headers=HEADERS)).read()
+		#https://puu.sh/zlUPC.png
 		name = url.rsplit('/', 1)[1]
 		return {'upload': ContentFile(content, name)}
 
