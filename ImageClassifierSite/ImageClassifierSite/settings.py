@@ -25,7 +25,7 @@ SECRET_KEY = '0tjszo&^eu&0qz&*-(+i!lcrfyqv36jg$#$vxnu#e^or=xu4t5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'powerful-hollows-92600.herokuapp.com']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'image-classifier-92600.herokuapp.com']
 
 
 # Application definition
